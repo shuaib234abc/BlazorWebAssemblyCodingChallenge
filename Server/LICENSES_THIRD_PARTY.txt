@@ -1,0 +1,15 @@
+﻿This application is primarily developed using ASP.NET Core Web API and Blazor WebAssembly
+You can learn more about Blazor at : https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor
+You can learn more about ASP.NET Core at : https://dotnet.microsoft.com/en-us/learn/aspnet/what-is-aspnet-core
+
+The application also uses some other 3rd party libraries, as listed below:
+We have been inspired to tablulate third party softwares in this way from Dolibarr (https://github.com/Dolibarr/dolibarr)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+SL  Library                     Library Link                        Version   License           License Link
+----------------------------------------------------------------------------------------------------------------------------------------
+1   Entity Framework Core		Nuget package used                  7.0.2     MIT               https://licenses.nuget.org/MIT
+
+2   Entity Framework Core       Nuget package used					7.0.2     MIT               https://licenses.nuget.org/MIT
+	SQL Server

@@ -1,0 +1,15 @@
+﻿References:
+-------------------------
+
+1. CRUD operations in Blazor WebAssembly, along with Entity Framework Core
+		https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+
+2. Getting started with Entity framework Core (Code first)
+		https://www.c-sharpcorner.com/article/using-entity-framework-core/
+		https://medium.com/c-sharp-progarmming/tutorial-code-first-approach-in-asp-net-core-mvc-with-ef-5baf5af696e9
+
+3. Reasons behind using interfaces
+		https://www.w3schools.com/java/java_interface.asp
+
+4. C# naming conventions
+		https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions

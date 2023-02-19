@@ -1,4 +1,4 @@
-namespace CodingChallengeV1.Shared.Entity.Models
+namespace CodingChallengeV1.Entity.Models
 {
     public class WeatherForecast
     {

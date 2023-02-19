@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodingChallengeV1.Shared.Entity.Models
+namespace CodingChallengeV1.Entity.Models
 {
     public enum SubElementType
     {

@@ -1,0 +1,52 @@
+﻿@*
+references
+1. Commenting in Razor: https://stackoverflow.com/questions/3382903/razor-comment-syntax
+2. Basics of Razor components in Blazor WebAssembly: https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+*@
+
+@page "/orders"
+@using CodingChallengeV1.Entity.Models
+@inject HttpClient Http
+
+<PageTitle>Orders</PageTitle>
+
+<h1>Orders</h1>
+
+@if (orders == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div style="float:right;clear:both;margin-bottom:15px">
+        <a class="btn btn-primary" href="/addorder">Add new order</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>State</th>
+                <th>Number of windows</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var singleOrder in orders)
+            {
+                <tr>
+                    <td>@singleOrder.Name</td>
+                    <td>@singleOrder.State</td>
+                    <td>@singleOrder.Windows.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Order[]? orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await Http.GetFromJsonAsync<Order[]>("api/Order");
+    }
+}

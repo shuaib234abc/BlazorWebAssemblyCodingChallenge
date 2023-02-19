@@ -1,4 +1,4 @@
-using CodingChallengeV1.Shared.Entity.Models;
+using CodingChallengeV1.Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodingChallengeV1.Server.Controllers

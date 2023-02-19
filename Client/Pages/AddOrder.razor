@@ -1,0 +1,199 @@
+﻿@*
+references
+1. Commenting in Razor: https://stackoverflow.com/questions/3382903/razor-comment-syntax
+2. Basics of Razor components in Blazor WebAssembly: https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+3. Bind onchange event of combobox: https://stackoverflow.com/questions/49947790/blazor-onchange-event-with-select-dropdown
+4. Bind to a dyanmic array of HTML form elements: https://stackoverflow.com/questions/57910886/blazor-how-to-use-a-bind-to-an-array-of-booleans
+*@
+
+@page "/addorder"
+@using CodingChallengeV1.Entity.Models
+@using CodingChallengeV1.DTO
+@inject HttpClient Http
+
+<PageTitle>Add Order</PageTitle>
+
+<h1>Add Order</h1>
+
+<div class="left_floated_items_container">
+    <div class="add_order_left_floated_item">
+        
+        <div class="row add_order_left_floated_item_header">
+            <div class="col-md-12">
+                <h3>Order configuration</h3>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="OrderName"> Order Name *</label>
+                    <input form="OrderName" class="form-control" @bind="@order.Name" />
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="State"> State *</label>
+                    <input form="State" class="form-control" @bind="@order.State" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="add_order_left_floated_item">
+
+        <div class="row add_order_left_floated_item_header">
+            <div class="col-md-12">
+                <h3>Window configuration</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="WindowName"> Window Name *</label>
+                    <input form="WindowName" class="form-control" @bind="@window.Name" />
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="QuantityOfWindows"> Quantity Of Windows *</label>
+                    <input form="QuantityOfWindows" type="number" class="form-control" @bind="@window.QuantityOfWindows" />
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="TotalSubElements"> Total Sub Elements *</label>
+                    <input @onchange="TotalSubElementsValChanged" form="TotalSubElements" type="number" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        @for (var i = 0; i < @window.TotalSubElements; i++){
+            var windowCount = i + 1;
+            var local = i;
+            <div class="window_sub_element_conf_container">
+                <h5>Configuration for sub element # @windowCount </h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label> Type *</label>
+                            <select class="form-control" @bind="@window.SubElements[local].Type">
+                                <option>Please Select</option>
+                                <option value="1">Doors</option>
+                                <option value="2">Window</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Width *</label>
+                            <input type="number" class="form-control" @bind="@window.SubElements[local].Width" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Height *</label>
+                            <input type="number" class="form-control" @bind="@window.SubElements[local].Height" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="add_order_left_floated_item_btn_cnt">
+            <a @onclick="AddThisWindowToOrder" class="btn btn-primary">Add This Window to Order</a>
+        </div>
+
+    </div>
+    <div class="add_order_left_floated_item last_floated_item">
+
+        <div class="row add_order_left_floated_item_header">
+            <div class="col-md-12">
+                <h3>Data Preview</h3>
+            </div>
+        </div>
+
+        @if(order.Windows.Count > 0){
+            <h4>Order - basic details</h4>
+            <table>
+                <tr>
+                    <td>Order name</td>
+                    <td>@order.Name</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>@order.State</td>
+                </tr>
+            </table>
+
+            <hr />
+
+            <h4>Order - window details</h4>
+            <table>
+                @for (var i = 0; i < order.Windows.Count; i++)
+                {
+                    <tr>
+                        <td>Window # @(i + 1)</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Window name</td>
+                                    <td>@order.Windows[i].Name</td>
+                                </tr>
+                                <tr>
+                                    <td>Quantity of windows</td>
+                                    <td>@order.Windows[i].QuantityOfWindows</td>
+                                </tr>
+                                <tr>
+                                    <td>Total sub elements</td>
+                                    <td>@order.Windows[i].TotalSubElements</td>
+                                </tr>
+                                <tr>
+                                    <td>Sub elements</td>
+                                    <td>
+                                        <ul>
+                                            @for (var j = 0; j < order.Windows[i].SubElements.Count; j++)
+                                            {
+                                                <li>Element: @order.Windows[i].SubElements[j].Element, Dimensions: @order.Windows[i].SubElements[j].Width X @order.Windows[i].SubElements[j].Height, Type: @order.Windows[i].SubElements[j].TypeAsString</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
+    </div>
+</div>
+
+@code {
+    OrderDto order = new OrderDto();
+    WindowDto window = new WindowDto();
+    private Order[]? orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await Http.GetFromJsonAsync<Order[]>("api/Order");
+    }
+
+    private void AddThisWindowToOrder(){
+        order.Windows.Add(window);
+        window = new WindowDto();
+    }
+
+    private void TotalSubElementsValChanged(ChangeEventArgs e)
+    {
+        String textBoxVal = e.Value.ToString();
+        int windowTotalSubElements = Convert.ToInt32(textBoxVal);
+        window.TotalSubElements = windowTotalSubElements;
+        window.SubElements = new List<SubElementDto>();
+        for(var i = 0; i < window.TotalSubElements; i++){
+            window.SubElements.Add(new SubElementDto());
+        }
+    }
+}

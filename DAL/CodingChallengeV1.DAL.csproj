@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\CodingChallengeV1.Shared.Entity.csproj" />
+    <ProjectReference Include="..\Entity\CodingChallengeV1.Entity.csproj" />
   </ItemGroup>
 
 </Project>

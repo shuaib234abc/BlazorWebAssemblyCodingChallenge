@@ -1,4 +1,4 @@
-﻿using CodingChallengeV1.Shared.Entity.Models;
+﻿using CodingChallengeV1.Entity.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

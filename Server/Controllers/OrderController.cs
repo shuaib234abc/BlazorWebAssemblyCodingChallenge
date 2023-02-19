@@ -1,5 +1,5 @@
 ﻿using CodingChallengeV1.DAL.Repository.Abstraction;
-using CodingChallengeV1.Shared.Entity.Models;
+using CodingChallengeV1.Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 

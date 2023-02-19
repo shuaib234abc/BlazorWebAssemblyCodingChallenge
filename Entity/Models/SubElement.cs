@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodingChallengeV1.Shared.Entity.Models
+namespace CodingChallengeV1.Entity.Models
 {
     /*
      * 
@@ -18,20 +18,14 @@ namespace CodingChallengeV1.Shared.Entity.Models
      * 
      */
 
-    public class Window
+    public class SubElement
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int QuantityOfWindows { get; set; }
-        public int TotalSubElements { get; set; }
-        public ICollection<SubElement> SubElements { get; set; }
-
-        public Window()
-        {
-            this.Name = "";
-            this.SubElements = new List<SubElement>();
-        }
+        public int Element { get; set; }
+        public SubElementType Type { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
 }

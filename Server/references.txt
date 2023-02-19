@@ -13,3 +13,6 @@
 
 4. C# naming conventions
 		https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+
+5. Bind to a dynamic array of HTML form elements inside a Razor view
+		https://stackoverflow.com/questions/57910886/blazor-how-to-use-a-bind-to-an-array-of-booleans

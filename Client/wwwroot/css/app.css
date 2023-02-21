@@ -62,3 +62,42 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.left_floated_items_container {
+    clear: both;
+}
+
+.add_order_left_floated_item {
+    float: left;
+    width: 30.5%;
+    padding: 1.5%;
+    margin: 0.9%;
+    border: 1px solid #ccc;
+}
+
+.add_order_left_floated_item_header {
+    border-bottom: 1px solid #ccc;
+}
+
+.add_order_left_floated_item .row .col-md-12 {
+    margin-top: 7%;
+}
+
+.window_sub_element_conf_container {
+    border: 1px solid #ccc;
+    padding: 2%;
+    margin-top: 14%;
+}
+
+.add_order_left_floated_item_btn_cnt {
+    margin-top: 4%;
+}
+
+.last_floated_item table, .add_order_left_floated_item table {
+    width: 100%;
+}
+
+.last_floated_item table td, .add_order_left_floated_item table td {
+    padding: 1.2%;
+    border: 1px solid #808080;
+}

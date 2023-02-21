@@ -1,4 +1,6 @@
-﻿using CodingChallengeV1.DAL.Repository.Abstraction;
+﻿using AutoMapper;
+using CodingChallengeV1.DAL.Repository.Abstraction;
+using CodingChallengeV1.DTO;
 using CodingChallengeV1.Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,7 +11,7 @@ namespace CodingChallengeV1.Server.Controllers
      * 
      * referenes:
      * 1. https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
-     * 
+     * 2. Using AutoMapper: https://medium.com/dotnet-hub/use-automapper-in-asp-net-or-asp-net-core-automapper-getting-started-introduction-dotnet-9cdda3db1feb
      */
 
     [Route("api/[controller]")]
@@ -17,10 +19,12 @@ namespace CodingChallengeV1.Server.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -36,9 +40,10 @@ namespace CodingChallengeV1.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<Order> AddOrder([FromBody] Order order)
+        public async Task<Order> AddOrder([FromBody] OrderDto order)
         {
-            return await _orderRepository.CreateAsync(order);
+            Order orderObjToSave = _mapper.Map<Order>(order);
+            return await _orderRepository.CreateAsync(orderObjToSave);
         }
 
         [HttpDelete("{id}")]

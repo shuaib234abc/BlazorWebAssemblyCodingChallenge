@@ -16,3 +16,6 @@
 
 5. Bind to a dynamic array of HTML form elements inside a Razor view
 		https://stackoverflow.com/questions/57910886/blazor-how-to-use-a-bind-to-an-array-of-booleans
+
+6. Using AutoMapper
+		https://medium.com/dotnet-hub/use-automapper-in-asp-net-or-asp-net-core-automapper-getting-started-introduction-dotnet-9cdda3db1feb

@@ -1,10 +1,9 @@
 using CodingChallengeV1.DAL;
 using CodingChallengeV1.DAL.Repository.Abstraction;
 using CodingChallengeV1.DAL.Repository.Implementation;
+using CodingChallengeV1.Server.AutoMapperConfigs;
 using CodingChallengeV1.Server.Settings;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 /*
  * 
@@ -15,6 +14,8 @@ using System;
  *      https://medium.com/c-sharp-progarmming/tutorial-code-first-approach-in-asp-net-core-mvc-with-ef-5baf5af696e9
  * CRUD operations in Blazor Web assembly with EF Core
  *      https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+ * Using AutoMapper
+ *      https://medium.com/dotnet-hub/use-automapper-in-asp-net-or-asp-net-core-automapper-getting-started-introduction-dotnet-9cdda3db1feb
  */
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,10 @@ var connectionStringSettings = builder.Configuration.GetSection("ConnectionStrin
 builder.Services.AddDbContext<CustomDbContext>(o =>
 {
     o.UseSqlServer(connectionStringSettings.DefaultDb);
+});
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<OrderDtoMapperProfile>();
 });
 
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();

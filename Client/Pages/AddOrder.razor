@@ -4,12 +4,15 @@ references
 2. Basics of Razor components in Blazor WebAssembly: https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
 3. Bind onchange event of combobox: https://stackoverflow.com/questions/49947790/blazor-onchange-event-with-select-dropdown
 4. Bind to a dyanmic array of HTML form elements: https://stackoverflow.com/questions/57910886/blazor-how-to-use-a-bind-to-an-array-of-booleans
+5. Registering JSRuntime: https://stackoverflow.com/questions/63744068/jsruntime-is-not-registered-blazor
 *@
 
 @page "/addorder"
 @using CodingChallengeV1.Entity.Models
 @using CodingChallengeV1.DTO
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
 
 <PageTitle>Add Order</PageTitle>
 
@@ -166,6 +169,10 @@ references
                     </tr>
                 }
             </table>
+
+            <div class="add_order_left_floated_item_btn_cnt">
+                <a @onclick="SaveOrder" class="btn btn-success">Save Order</a>
+            </div>
         }
 
     </div>
@@ -184,6 +191,17 @@ references
     private void AddThisWindowToOrder(){
         order.Windows.Add(window);
         window = new WindowDto();
+    }
+
+    private async Task SaveOrder()
+    {
+        var response = await Http.PostAsJsonAsync("api/Order", @order);
+        Order savedOrderInResponse = await response.Content.ReadFromJsonAsync<Order>();
+        if (savedOrderInResponse.Id > 0)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
+            NavigationManager.NavigateTo("orders");
+        }
     }
 
     private void TotalSubElementsValChanged(ChangeEventArgs e)

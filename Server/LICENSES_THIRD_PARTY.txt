@@ -13,3 +13,8 @@ SL  Library                     Library Link                        Version   Li
 
 2   Entity Framework Core       Nuget package used					7.0.2     MIT               https://licenses.nuget.org/MIT
 	SQL Server
+
+3.	AutoMapper					Nuget package used					12.0.1	  MIT				https://licenses.nuget.org/MIT
+
+4.	AutoMapper.Extensions.Microsoft.DependencyInjection
+								Nuget package used					12.0.0	  MIT				https://licenses.nuget.org/MIT

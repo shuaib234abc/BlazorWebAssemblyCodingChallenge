@@ -34,9 +34,11 @@ namespace CodingChallengeV1.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<Order> Get(int id)
+        public async Task<OrderDto> Get(int id)
         {
-            return await _orderRepository.GetByIdAsync(id);
+            Order order = await _orderRepository.GetByIdAsync(id);
+            OrderDto orderDto = _mapper.Map<OrderDto>(order);
+            return orderDto;
         }
 
         [HttpPost]

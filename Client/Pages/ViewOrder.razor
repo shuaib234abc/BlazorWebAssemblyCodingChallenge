@@ -1,0 +1,96 @@
+﻿@*
+references
+1. Commenting in Razor: https://stackoverflow.com/questions/3382903/razor-comment-syntax
+2. Basics of Razor components in Blazor WebAssembly: https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+3. Registering JSRuntime: https://stackoverflow.com/questions/63744068/jsruntime-is-not-registered-blazor
+4. Using URL parameters in Razor view: https://medium.com/it-dead-inside/lets-learn-blazor-working-with-url-parameters-and-query-strings-37e1f8aacec7
+*@
+
+@page "/vieworder/{order_id:int?}"
+@using CodingChallengeV1.Entity.Models
+@using CodingChallengeV1.DTO
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<PageTitle>View Order</PageTitle>
+
+<h1>View Order</h1>
+
+<div class="left_floated_items_container">
+    <div class="add_order_left_floated_item">
+
+        <div class="row add_order_left_floated_item_header">
+            <div class="col-md-12">
+                <h3>Data Preview</h3>
+            </div>
+        </div>
+
+        @if (order.Windows.Count > 0)
+        {
+            <h4>Order - basic details</h4>
+            <table>
+                <tr>
+                    <td>Order name</td>
+                    <td>@order.Name</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>@order.State</td>
+                </tr>
+            </table>
+
+            <hr />
+
+            <h4>Order - window details</h4>
+            <table>
+                @for (var i = 0; i < order.Windows.Count; i++)
+                {
+                    <tr>
+                        <td>Window # @(i + 1)</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Window name</td>
+                                    <td>@order.Windows[i].Name</td>
+                                </tr>
+                                <tr>
+                                    <td>Quantity of windows</td>
+                                    <td>@order.Windows[i].QuantityOfWindows</td>
+                                </tr>
+                                <tr>
+                                    <td>Total sub elements</td>
+                                    <td>@order.Windows[i].TotalSubElements</td>
+                                </tr>
+                                <tr>
+                                    <td>Sub elements</td>
+                                    <td>
+                                        <ul>
+                                            @for (var j = 0; j < order.Windows[i].SubElements.Count; j++)
+                                            {
+                                                <li>Element: @order.Windows[i].SubElements[j].Element, Dimensions: @order.Windows[i].SubElements[j].Width X @order.Windows[i].SubElements[j].Height, Type: @order.Windows[i].SubElements[j].TypeAsString</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int order_id { get; set; } = 0;
+    
+    OrderDto order = new OrderDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        order = await Http.GetFromJsonAsync<OrderDto>("api/Order/" + order_id);
+    }
+}

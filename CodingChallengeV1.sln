@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingChallengeV1.Entity", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingChallengeV1.DAL", "DAL\CodingChallengeV1.DAL.csproj", "{9403F866-A55F-49D6-899D-D73D3763AB62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingChallengeV1.DTO", "DTO\CodingChallengeV1.DTO.csproj", "{9D252234-2A5D-492A-81ED-74194AB0FE33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingChallengeV1.DTO", "DTO\CodingChallengeV1.DTO.csproj", "{9D252234-2A5D-492A-81ED-74194AB0FE33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

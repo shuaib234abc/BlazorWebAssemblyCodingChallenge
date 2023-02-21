@@ -15,6 +15,9 @@ namespace CodingChallengeV1.DAL.Repository.Implementation
          * 
          * references:
          * 1. https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+         * 2. eager loading of related properties in EF: 
+         *          https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager 
+         *          https://learn.microsoft.com/en-us/ef/ef6/querying/related-data
          * 
          */
 
@@ -40,12 +43,16 @@ namespace CodingChallengeV1.DAL.Repository.Implementation
 
         public async Task<List<Order>> GetAllAsync()
         {
-            return await _dbContext.Orders.ToListAsync();
+            return await _dbContext.Orders.Include(o => o.Windows).ToListAsync();
         }
 
         public async Task<Order> GetByIdAsync(int Id)
         {
-            return await _dbContext.Orders.FirstOrDefaultAsync(x => x.Id == Id);
+            return await _dbContext.Orders
+                                    .Where(x => x.Id == Id)
+                                    .Include(o => o.Windows)
+                                    .ThenInclude(o1 => o1.SubElements)
+                                    .FirstOrDefaultAsync();
         }
 
         public async Task DeleteAsync(int id)

@@ -27,6 +27,7 @@ else
                 <th>Name</th>
                 <th>State</th>
                 <th>Number of windows</th>
+                <th colspan="3">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -36,6 +37,9 @@ else
                     <td>@singleOrder.Name</td>
                     <td>@singleOrder.State</td>
                     <td>@singleOrder.Windows.Count</td>
+                    <td><a href="/vieworder/@singleOrder.Id" class="btn btn-primary btn-sm">View</a></td>
+                    <td><a href="/editorder/@singleOrder.Id" class="btn btn-success btn-sm">Edit</a></td>
+                    <td><a href="/deleteorder/@singleOrder.Id" class="btn btn-danger btn-sm">Delete</a></td>
                 </tr>
             }
         </tbody>

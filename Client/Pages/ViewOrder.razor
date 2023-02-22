@@ -20,15 +20,8 @@ references
 <div class="left_floated_items_container">
     <div class="add_order_left_floated_item">
 
-        <div class="row add_order_left_floated_item_header">
-            <div class="col-md-12">
-                <h3>Data Preview</h3>
-            </div>
-        </div>
-
         @if (order.Windows.Count > 0)
         {
-            <h4>Order - basic details</h4>
             <table>
                 <tr>
                     <td>Order name</td>
@@ -38,12 +31,10 @@ references
                     <td>State</td>
                     <td>@order.State</td>
                 </tr>
-            </table>
-
-            <hr />
-
-            <h4>Order - window details</h4>
-            <table>
+                <tr>
+                    <td>Number of windows</td>
+                    <td>@order.Windows.Count</td>
+                </tr>
                 @for (var i = 0; i < order.Windows.Count; i++)
                 {
                     <tr>
@@ -62,17 +53,20 @@ references
                                     <td>Total sub elements</td>
                                     <td>@order.Windows[i].TotalSubElements</td>
                                 </tr>
+                                @for (var j = 0; j < order.Windows[i].SubElements.Count; j++)
+                                {
                                 <tr>
-                                    <td>Sub elements</td>
-                                    <td>
+                                    <td class="td_sub_element_info">Sub element # @(j+1)</td>
+                                    <td class="td_sub_element_info">
                                         <ul>
-                                            @for (var j = 0; j < order.Windows[i].SubElements.Count; j++)
-                                            {
-                                                <li>Element: @order.Windows[i].SubElements[j].Element, Dimensions: @order.Windows[i].SubElements[j].Width X @order.Windows[i].SubElements[j].Height, Type: @order.Windows[i].SubElements[j].TypeAsString</li>
-                                            }
+                                            <li>Element: @order.Windows[i].SubElements[j].Element</li>
+                                            <li>Width: @order.Windows[i].SubElements[j].Width</li>
+                                            <li>Height: @order.Windows[i].SubElements[j].Height</li>
+                                            <li>Type: @order.Windows[i].SubElements[j].TypeAsString</li>
                                         </ul>
                                     </td>
                                 </tr>
+                                }
                             </table>
                         </td>
                     </tr>

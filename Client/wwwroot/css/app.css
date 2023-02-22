@@ -101,3 +101,7 @@ a, .btn-link {
     padding: 1.2%;
     border: 1px solid #808080;
 }
+
+.td_sub_element_info {
+    background-color:#DCEDC8;
+}

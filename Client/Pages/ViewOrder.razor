@@ -1,9 +1,17 @@
 ﻿@*
 references
-1. Commenting in Razor: https://stackoverflow.com/questions/3382903/razor-comment-syntax
-2. Basics of Razor components in Blazor WebAssembly: https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
-3. Registering JSRuntime: https://stackoverflow.com/questions/63744068/jsruntime-is-not-registered-blazor
-4. Using URL parameters in Razor view: https://medium.com/it-dead-inside/lets-learn-blazor-working-with-url-parameters-and-query-strings-37e1f8aacec7
+1. Commenting in Razor:
+        https://stackoverflow.com/questions/3382903/razor-comment-syntax
+2. Basics of Razor components in Blazor WebAssembly:
+        https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+3. Registering JSRuntime:
+        https://stackoverflow.com/questions/63744068/jsruntime-is-not-registered-blazor
+4. Using URL parameters in Razor view: 
+        https://medium.com/it-dead-inside/lets-learn-blazor-working-with-url-parameters-and-query-strings-37e1f8aacec7
+5. Passing arguments to onclick function:
+        https://stackoverflow.com/questions/54297711/blazor-how-to-pass-arguments-to-onclick-function
+6. Stopping event propagation for a client side function:
+        https://stackoverflow.com/questions/61579284/how-to-stop-event-propagation-in-blazor-server-app
 *@
 
 @page "/vieworder/{order_id:int?}"
@@ -45,7 +53,7 @@ references
                             Window # @(i + 1)
                             <br />
                             <a class="a_order_inline" @onclick="@(e => EditWindow(local_of_i))" href=""><span class="oi oi-pencil" aria-hidden="true"></span></a>
-                            <a class="a_order_inline" @onclick="DeleteWindow" href=""><span class="oi oi-trash" aria-hidden="true"></span></a>
+                            <a class="a_order_inline" @onclick="@(e => DeleteWindow(local_of_i))" href=""><span class="oi oi-trash" aria-hidden="true"></span></a>
                         </td>
                         <td>
                             <table>
@@ -69,7 +77,7 @@ references
                                             Sub element # @(j + 1)
                                             <br />
                                             <a class="a_order_inline" @onclick="@(e => EditSubElement(local_of_i, local_of_j))" href=""><span class="oi oi-pencil" aria-hidden="true"></span></a>
-                                            <a class="a_order_inline" @onclick="DeleteSubElement" href=""><span class="oi oi-trash" aria-hidden="true"></span></a>
+                                            <a class="a_order_inline" @onclick="@(e => DeleteSubElement(local_of_i, local_of_j))" href=""><span class="oi oi-trash" aria-hidden="true"></span></a>
                                         </td>
                                         <td class="td_sub_element_info">
                                             <ul>
@@ -265,14 +273,25 @@ references
         }
     }
 
-    private async Task DeleteWindow()
+    private async Task DeleteWindow(int index)
     {
-        var response = await Http.PostAsJsonAsync("api/Order", @order);
-        Order savedOrderInResponse = await response.Content.ReadFromJsonAsync<Order>();
-        if (savedOrderInResponse.Id > 0)
-        {
-            await JSRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
-            NavigationManager.NavigateTo("orders");
+        if(order.Windows.Count <= 1){
+            await JSRuntime.InvokeVoidAsync("alert", "You cannot delete windows from an order with 1 or less windows");
+            return;
+        }
+        bool confirmStatus = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure that you want to delete?");
+        if(confirmStatus){
+            var response = await Http.DeleteAsync("api/Window/" + order.Windows[index].Id);
+            bool operationStatus = await response.Content.ReadFromJsonAsync<bool>();
+            if (operationStatus)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Window deleted successfully!");
+                await JSRuntime.InvokeVoidAsync("window.location.reload");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "An unexpected error occurred. Please try again.");
+            }
         }
     }
 
@@ -306,14 +325,27 @@ references
         }
     }
 
-    private async Task DeleteSubElement()
+    private async Task DeleteSubElement(int window_index, int sub_element_index)
     {
-        var response = await Http.PostAsJsonAsync("api/Order", @order);
-        Order savedOrderInResponse = await response.Content.ReadFromJsonAsync<Order>();
-        if (savedOrderInResponse.Id > 0)
+        if (order.Windows[window_index].SubElements.Count <= 1)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
-            NavigationManager.NavigateTo("orders");
+            await JSRuntime.InvokeVoidAsync("alert", "You cannot delete sub elements from a window with 1 or less sub elements");
+            return;
+        }
+        bool confirmStatus = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure that you want to delete?");
+        if (confirmStatus)
+        {
+            var response = await Http.DeleteAsync("api/SubElement/" + order.Windows[window_index].SubElements[sub_element_index].Id);
+            bool operationStatus = await response.Content.ReadFromJsonAsync<bool>();
+            if (operationStatus)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Sub element deleted successfully!");
+                await JSRuntime.InvokeVoidAsync("window.location.reload");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "An unexpected error occurred. Please try again.");
+            }
         }
     }
 }

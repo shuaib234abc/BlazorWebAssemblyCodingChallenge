@@ -18,6 +18,8 @@ namespace CodingChallengeV1.DAL.Repository.Implementation
          * 2. resolving the issue of simultaneous tracking of one entity by multiple instances
          *          https://stackoverflow.com/questions/48202403/instance-of-entity-type-cannot-be-tracked-because-another-instance-with-same-key
          *          https://stackoverflow.com/questions/12211680/what-difference-does-asnotracking-make
+         * 3. cascade delete
+         *          https://learn.microsoft.com/en-us/ef/core/saving/cascade-delete
          * 
          */
 
@@ -53,7 +55,7 @@ namespace CodingChallengeV1.DAL.Repository.Implementation
 
         public async Task DeleteAsync(int id)
         {
-            var data = _dbContext.Windows.FirstOrDefault(x => x.Id == id);
+            var data = _dbContext.Windows.Include(x => x.SubElements).FirstOrDefault(x => x.Id == id);
             _dbContext.Remove(data);
             await _dbContext.SaveChangesAsync();
         }

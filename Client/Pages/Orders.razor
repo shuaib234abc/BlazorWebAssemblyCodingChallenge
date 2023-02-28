@@ -1,12 +1,21 @@
 ﻿@*
 references
-1. Commenting in Razor: https://stackoverflow.com/questions/3382903/razor-comment-syntax
-2. Basics of Razor components in Blazor WebAssembly: https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+1. Commenting in Razor: 
+        https://stackoverflow.com/questions/3382903/razor-comment-syntax
+2. Basics of Razor components in Blazor WebAssembly: 
+        https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+3. Registering JSRuntime:
+        https://stackoverflow.com/questions/63744068/jsruntime-is-not-registered-blazor
+4. Passing arguments to onclick function:
+        https://stackoverflow.com/questions/54297711/blazor-how-to-pass-arguments-to-onclick-function
+5. Stopping event propagation for a client side function:
+        https://stackoverflow.com/questions/61579284/how-to-stop-event-propagation-in-blazor-server-app
 *@
 
 @page "/orders"
 @using CodingChallengeV1.Entity.Models
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Orders</PageTitle>
 
@@ -37,9 +46,10 @@ else
                     <td>@singleOrder.Name</td>
                     <td>@singleOrder.State</td>
                     <td>@singleOrder.Windows.Count</td>
-                    <td><a href="/vieworder/@singleOrder.Id" class="btn btn-primary btn-sm">View</a></td>
-                    <td><a href="/editorder/@singleOrder.Id" class="btn btn-success btn-sm">Edit</a></td>
-                    <td><a href="/deleteorder/@singleOrder.Id" class="btn btn-danger btn-sm">Delete</a></td>
+                    <td><a href="/vieworder/@singleOrder.Id" class="btn btn-primary btn-sm">View / Edit</a></td>
+                    <td @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                        <a @onclick="@(e => DeleteOrder(@singleOrder.Id))" href="" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -52,5 +62,25 @@ else
     protected override async Task OnInitializedAsync()
     {
         orders = await Http.GetFromJsonAsync<Order[]>("api/Order");
+    }
+
+    private async Task DeleteOrder(int order_id_to_delete)
+    {
+        await JSRuntime.InvokeVoidAsync("alert", order_id_to_delete);
+        bool confirmStatus = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure that you want to delete?");
+        if (confirmStatus)
+        {
+            var response = await Http.DeleteAsync("api/Order/" + order_id_to_delete);
+            bool operationStatus = await response.Content.ReadFromJsonAsync<bool>();
+            if (operationStatus)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Order deleted successfully!");
+                await JSRuntime.InvokeVoidAsync("window.location.reload");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "An unexpected error occurred. Please try again.");
+            }
+        }
     }
 }

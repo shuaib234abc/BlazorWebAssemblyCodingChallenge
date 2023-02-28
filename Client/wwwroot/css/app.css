@@ -107,3 +107,9 @@ a, .btn-link {
 .td_sub_element_info {
     background-color:#DCEDC8;
 }
+
+.div_add_button_container {
+    float: right;
+    clear: both;
+    margin-bottom: 15px
+}

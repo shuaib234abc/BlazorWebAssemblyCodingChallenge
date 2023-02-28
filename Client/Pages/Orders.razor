@@ -66,7 +66,6 @@ else
 
     private async Task DeleteOrder(int order_id_to_delete)
     {
-        await JSRuntime.InvokeVoidAsync("alert", order_id_to_delete);
         bool confirmStatus = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure that you want to delete?");
         if (confirmStatus)
         {

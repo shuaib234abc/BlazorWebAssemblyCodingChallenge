@@ -247,7 +247,6 @@ references
 
     private async Task EditWindow(int index)
     {
-        await JSRuntime.InvokeVoidAsync("alert", index);
         windowBeingEdited = true;
         orderBeingEdited = false;
         subElementBeingEdited = false;
@@ -297,8 +296,6 @@ references
 
     private async Task EditSubElement(int window_index, int sub_element_index)
     {
-        await JSRuntime.InvokeVoidAsync("alert", window_index);
-        await JSRuntime.InvokeVoidAsync("alert", sub_element_index);
         windowBeingEdited = false;
         orderBeingEdited = false;
         subElementBeingEdited = true;

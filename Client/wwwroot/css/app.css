@@ -120,6 +120,10 @@ a, .btn-link {
 .div_add_order_page .last_floated_item.add_order_left_floated_item {
     width: 43.5%;
 }
-.div_add_order_page .form-group label, .div_add_order_page table tr td{
-    font-size:0.89em;
+.div_add_order_page .form-group label, .div_add_order_page table tr td,
+.div_view_order_page .form-group label, .div_view_order_page table tr td {
+    font-size: 0.89em;
+}
+.div_view_order_page > div:nth-child(1){
+    width:55%;
 }

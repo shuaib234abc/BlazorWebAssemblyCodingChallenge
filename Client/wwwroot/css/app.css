@@ -113,3 +113,13 @@ a, .btn-link {
     clear: both;
     margin-bottom: 15px
 }
+
+.div_add_order_page :not(.last_floated_item).add_order_left_floated_item {
+    width: 25.5%;
+}
+.div_add_order_page .last_floated_item.add_order_left_floated_item {
+    width: 43.5%;
+}
+.div_add_order_page .form-group label, .div_add_order_page table tr td{
+    font-size:0.89em;
+}

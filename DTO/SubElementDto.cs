@@ -8,6 +8,7 @@ namespace CodingChallengeV1.DTO
 {
     public class SubElementDto
     {
+        public int Id { get; set; }
         public int Element { get; set; }
         public int Type { get; set; }
         public int Width { get; set; }

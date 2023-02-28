@@ -8,6 +8,7 @@ namespace CodingChallengeV1.DTO
 {
     public class WindowDto
     {
+        public int Id { get; set; }
         public string Name { get; set; } = "";
         public int QuantityOfWindows { get; set; }
         public int TotalSubElements { get; set; }

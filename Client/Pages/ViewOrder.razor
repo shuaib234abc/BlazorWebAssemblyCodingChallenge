@@ -20,12 +20,14 @@ references
 <div class="left_floated_items_container">
     <div class="add_order_left_floated_item">
 
-        @if (order.Windows.Count > 0)
+        @if (@order.Windows.Count > 0)
         {
             <table>
                 <tr>
                     <td>Order name</td>
-                    <td>@order.Name</td>
+                    <td @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                        @order.Name <a class="a_order_inline" @onclick="EditOrder" href=""><span class="oi oi-pencil" aria-hidden="true"></span></a>
+                    </td>
                 </tr>
                 <tr>
                     <td>State</td>
@@ -37,8 +39,14 @@ references
                 </tr>
                 @for (var i = 0; i < order.Windows.Count; i++)
                 {
+                    var local_of_i = i;
                     <tr>
-                        <td>Window # @(i + 1)</td>
+                        <td @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                            Window # @(i + 1)
+                            <br />
+                            <a class="a_order_inline" @onclick="@(e => EditWindow(local_of_i))" href=""><span class="oi oi-pencil" aria-hidden="true"></span></a>
+                            <a class="a_order_inline" @onclick="DeleteWindow" href=""><span class="oi oi-trash" aria-hidden="true"></span></a>
+                        </td>
                         <td>
                             <table>
                                 <tr>
@@ -55,17 +63,23 @@ references
                                 </tr>
                                 @for (var j = 0; j < order.Windows[i].SubElements.Count; j++)
                                 {
-                                <tr>
-                                    <td class="td_sub_element_info">Sub element # @(j+1)</td>
-                                    <td class="td_sub_element_info">
-                                        <ul>
-                                            <li>Element: @order.Windows[i].SubElements[j].Element</li>
-                                            <li>Width: @order.Windows[i].SubElements[j].Width</li>
-                                            <li>Height: @order.Windows[i].SubElements[j].Height</li>
-                                            <li>Type: @order.Windows[i].SubElements[j].TypeAsString</li>
-                                        </ul>
-                                    </td>
-                                </tr>
+                                    var local_of_j = j;
+                                    <tr>
+                                        <td class="td_sub_element_info" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                                            Sub element # @(j + 1)
+                                            <br />
+                                            <a class="a_order_inline" @onclick="@(e => EditSubElement(local_of_i, local_of_j))" href=""><span class="oi oi-pencil" aria-hidden="true"></span></a>
+                                            <a class="a_order_inline" @onclick="DeleteSubElement" href=""><span class="oi oi-trash" aria-hidden="true"></span></a>
+                                        </td>
+                                        <td class="td_sub_element_info">
+                                            <ul>
+                                                <li>Element: @order.Windows[i].SubElements[j].Element</li>
+                                                <li>Width: @order.Windows[i].SubElements[j].Width</li>
+                                                <li>Height: @order.Windows[i].SubElements[j].Height</li>
+                                                <li>Type: @order.Windows[i].SubElements[j].TypeAsString</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
                                 }
                             </table>
                         </td>
@@ -75,16 +89,231 @@ references
         }
 
     </div>
+
+    
+    @if(windowBeingEdited){
+        <div class="add_order_left_floated_item">
+            <div class="row add_order_left_floated_item_header">
+                <div class="col-md-12">
+                    <h3>Edit Window</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="WindowName"> Window Name *</label>
+                        <input form="WindowName" class="form-control" @bind="@windowForEdit.Name" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="QuantityOfWindows"> Quantity Of Windows *</label>
+                        <input form="QuantityOfWindows" type="number" class="form-control" @bind="@windowForEdit.QuantityOfWindows" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="TotalSubElements"> Total Sub Elements *</label>
+                        <input form="TotalSubElements" type="number" class="form-control" @bind="@windowForEdit.TotalSubElements" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <a @onclick="SaveWindowEdits" class="btn btn-success">Save Changes</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (orderBeingEdited)
+    {
+        <div class="add_order_left_floated_item">
+            <div class="row add_order_left_floated_item_header">
+                <div class="col-md-12">
+                    <h3>Edit Order</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="OrderNameForEdit"> Order Name *</label>
+                        <input form="OrderNameForEdit" class="form-control" @bind="@order.Name" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="StateForEdit"> State *</label>
+                        <input form="StateForEdit" class="form-control" @bind="@order.State" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <a @onclick="SaveOrderEdits" class="btn btn-success">Save Changes</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (subElementBeingEdited)
+    {
+        <div class="add_order_left_floated_item">
+            <div class="row add_order_left_floated_item_header">
+                <div class="col-md-12">
+                    <h3>Edit Sub Element</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label> Type *</label>
+                        <select class="form-control" @bind="@subElementForEdit.Type">
+                            <option>Please Select</option>
+                            <option value="1">Doors</option>
+                            <option value="2">Window</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Width *</label>
+                        <input type="number" class="form-control" @bind="@subElementForEdit.Width" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Height *</label>
+                        <input type="number" class="form-control" @bind="@subElementForEdit.Height" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <a @onclick="SaveSubElementEdits" class="btn btn-success">Save Changes</a>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
 
 @code {
     [Parameter]
     public int order_id { get; set; } = 0;
-    
+
+    public bool windowBeingEdited = false;
+    public bool orderBeingEdited = false;
+    public bool subElementBeingEdited = false;
+
     OrderDto order = new OrderDto();
+    WindowDto windowForEdit = new WindowDto();
+    SubElementDto subElementForEdit = new SubElementDto();
 
     protected override async Task OnInitializedAsync()
     {
         order = await Http.GetFromJsonAsync<OrderDto>("api/Order/" + order_id);
+        windowBeingEdited = false;
+        orderBeingEdited = false;
+        subElementBeingEdited = false;
+    }
+
+    private async Task EditOrder()
+    {
+        windowBeingEdited = false;
+        orderBeingEdited = true;
+        subElementBeingEdited = false;
+    }
+
+    private async Task SaveOrderEdits()
+    {
+        var response = await Http.PutAsJsonAsync("api/Order/" + order_id, @order);
+        bool operationStatus = await response.Content.ReadFromJsonAsync<bool>();
+        if (operationStatus)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Order edits saved successfully!");
+            await JSRuntime.InvokeVoidAsync("window.location.reload");
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "An unexpected error occurred. Please try again.");
+        }
+    }
+
+    private async Task EditWindow(int index)
+    {
+        await JSRuntime.InvokeVoidAsync("alert", index);
+        windowBeingEdited = true;
+        orderBeingEdited = false;
+        subElementBeingEdited = false;
+        windowForEdit = new WindowDto();
+        windowForEdit.Id = order.Windows[index].Id;
+        windowForEdit.Name = order.Windows[index].Name;
+        windowForEdit.QuantityOfWindows = order.Windows[index].QuantityOfWindows;
+        windowForEdit.TotalSubElements = order.Windows[index].TotalSubElements;
+        windowForEdit.SubElements = order.Windows[index].SubElements;
+    }
+
+    private async Task SaveWindowEdits()
+    {
+        var response = await Http.PutAsJsonAsync("api/Window/" + @windowForEdit.Id, @windowForEdit);
+        bool operationStatus = await response.Content.ReadFromJsonAsync<bool>();
+        if (operationStatus)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Window edits saved successfully!");
+            await JSRuntime.InvokeVoidAsync("window.location.reload");
+        }
+        else{
+            await JSRuntime.InvokeVoidAsync("alert", "An unexpected error occurred. Please try again.");
+        }
+    }
+
+    private async Task DeleteWindow()
+    {
+        var response = await Http.PostAsJsonAsync("api/Order", @order);
+        Order savedOrderInResponse = await response.Content.ReadFromJsonAsync<Order>();
+        if (savedOrderInResponse.Id > 0)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
+            NavigationManager.NavigateTo("orders");
+        }
+    }
+
+    private async Task EditSubElement(int window_index, int sub_element_index)
+    {
+        await JSRuntime.InvokeVoidAsync("alert", window_index);
+        await JSRuntime.InvokeVoidAsync("alert", sub_element_index);
+        windowBeingEdited = false;
+        orderBeingEdited = false;
+        subElementBeingEdited = true;
+        subElementForEdit = new SubElementDto();
+        subElementForEdit.Id = order.Windows[window_index].SubElements[sub_element_index].Id;
+        subElementForEdit.Width = order.Windows[window_index].SubElements[sub_element_index].Width;
+        subElementForEdit.Height = order.Windows[window_index].SubElements[sub_element_index].Height;
+        subElementForEdit.Element = order.Windows[window_index].SubElements[sub_element_index].Element;
+        subElementForEdit.Type = order.Windows[window_index].SubElements[sub_element_index].Type;
+    }
+
+    private async Task SaveSubElementEdits()
+    {
+        var response = await Http.PutAsJsonAsync("api/SubElement/" + subElementForEdit.Id, subElementForEdit);
+        bool operationStatus = await response.Content.ReadFromJsonAsync<bool>();
+        if (operationStatus)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Sub element edits saved successfully!");
+            await JSRuntime.InvokeVoidAsync("window.location.reload");
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "An unexpected error occurred. Please try again.");
+        }
+    }
+
+    private async Task DeleteSubElement()
+    {
+        var response = await Http.PostAsJsonAsync("api/Order", @order);
+        Order savedOrderInResponse = await response.Content.ReadFromJsonAsync<Order>();
+        if (savedOrderInResponse.Id > 0)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
+            NavigationManager.NavigateTo("orders");
+        }
     }
 }

@@ -15,6 +15,9 @@ namespace CodingChallengeV1.DAL.Repository.Implementation
          * 
          * references:
          * 1. https://www.c-sharpcorner.com/blogs/create-a-net-6-app-on-blazor-wasm-for-crud-operations-with-ef-core
+         * 2. resolving the issue of simultaneous tracking of one entity by multiple instances
+         *          https://stackoverflow.com/questions/48202403/instance-of-entity-type-cannot-be-tracked-because-another-instance-with-same-key
+         *          https://stackoverflow.com/questions/12211680/what-difference-does-asnotracking-make
          * 
          */
 
@@ -40,12 +43,12 @@ namespace CodingChallengeV1.DAL.Repository.Implementation
 
         public async Task<List<SubElement>> GetAllAsync()
         {
-            return await _dbContext.SubElements.ToListAsync();
+            return await _dbContext.SubElements.AsNoTracking().ToListAsync();
         }
 
         public async Task<SubElement> GetByIdAsync(int Id)
         {
-            return await _dbContext.SubElements.FirstOrDefaultAsync(x => x.Id == Id);
+            return await _dbContext.SubElements.AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
         }
 
         public async Task DeleteAsync(int id)

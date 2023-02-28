@@ -8,6 +8,7 @@ namespace CodingChallengeV1.DTO
 {
     public class OrderDto
     {
+        public int Id { get; set; }
         public string Name { get; set; } = "";
         public string State { get; set; } = "";
         public List<WindowDto> Windows { get; set; } = new List<WindowDto>();

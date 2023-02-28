@@ -34,9 +34,10 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<OrderDtoMapperProfile>();
 });
 
-builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-builder.Services.AddTransient<ISubElementRepository, SubElementRepository>();
-builder.Services.AddTransient<IWindowRepository, WindowRepository>();
+// ref: using the same repository class in multiple controllers : https://stackoverflow.com/questions/48202403/instance-of-entity-type-cannot-be-tracked-because-another-instance-with-same-key
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<ISubElementRepository, SubElementRepository>();
+builder.Services.AddScoped<IWindowRepository, WindowRepository>();
 
 var app = builder.Build();
 

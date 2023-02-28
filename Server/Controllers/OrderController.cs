@@ -58,23 +58,16 @@ namespace CodingChallengeV1.Server.Controllers
         [HttpPut("{id}")]
         public async Task<bool> UpdateOrder(int id, [FromBody] Order Object)
         {
-            try
-            {
-                if (Object == null)
-                {
-                    return false;
-                }
-                var existingData = await _orderRepository.GetByIdAsync(id);
-                existingData.State = Object.State;
-                existingData.Windows = Object.Windows;
-                existingData.Name = Object.Name;
-                await _orderRepository.UpdateAsync(existingData);
-                return true;
-            }
-            catch(Exception ex)
+            if (Object == null)
             {
                 return false;
             }
+            var existingData = await _orderRepository.GetByIdAsync(id);
+            existingData.State = Object.State;
+            existingData.Windows = Object.Windows;
+            existingData.Name = Object.Name;
+            await _orderRepository.UpdateAsync(existingData);
+            return true;
         }
     }
 }

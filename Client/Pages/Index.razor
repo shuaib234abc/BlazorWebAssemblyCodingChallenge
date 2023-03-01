@@ -2,8 +2,51 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Coding Challenge</h1>
 
-Welcome to your new app.
+<table class="table table_home_page">
+    <tr>
+        <td>
+            <h3>Completed features</h3>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+            <ul>
+                <li>Save order / window / sub-element data to the DB, and retrieve it back</li>
+                <li>User can see a list of all existing orders</li>
+                <li>User can create an order, the windows under that order, and sub-elements under each window IN A SINGLE PAGE</li>
+                <li>Creation of order, window, sub-element in a single page is more user friendly</li>
+                <li>User can VIEW / EDIT an order, the windows under that order, and sub-elements under each window IN A SINGLE PAGE</li>
+                <li>User can DELETE any order from the list</li>
+            </ul>
+        </td>
+        <td>
+            <h3>NOT COMPLETED</h3>
+
+            <ul>
+                <li>Form validation</li>
+                <li>When editing an order, it is not possible to add new window or a new sub-element</li>
+                <li>When a sub-element is removed from any window, the "TotalSubElements" property of Window object should be automatically decremented</li>
+                <li>Instead of javascript alert messages, toast messages should be shown.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h3>Technical highlights</h3>
+
+            <ul>
+                <li>Database connectivity using <b>Entity Framework Code First</b></li>
+                <li>Separate projects for data access layer, entity definitons, DTO, etc</li>
+                <li>Use of generics in repository classes</li>
+            </ul>
+        </td>
+        <td>
+            <h3>Developer notes</h3>
+
+            <ul>
+                <li>The create order page was designed in this way to make it more user friendly.</li>
+                <li>It was obvious to me from the question that order, window and sub-element are related with has-a relationship. I tried to reflect this relationship in the designs.</li>
+                <li>The root folder of the project contains a video demonstrating the app.</li>
+            </ul>
+        </td>
+    </tr>
+</table>

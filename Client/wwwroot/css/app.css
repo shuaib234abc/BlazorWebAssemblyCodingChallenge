@@ -2,6 +2,14 @@
 
 /** some colors taken from https://m1.material.io/style/color.html#color-color-palette */
 
+/*
+    references:
+    1. nth child selector
+        https://www.w3schools.com/cssref/sel_nth-child.php
+    2. not selector
+        https://www.w3schools.com/cssref/sel_not.php
+*/
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -126,4 +134,11 @@ a, .btn-link {
 }
 .div_view_order_page > div:nth-child(1){
     width:55%;
+}
+
+.table_home_page{
+    width:100%
+}
+.table_home_page tr td{
+    width:50%;
 }
